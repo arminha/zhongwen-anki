@@ -3,6 +3,9 @@ name = "zhongwen-anki"
 version = "0.1.0"
 authors = ["Armin Häberling <armin.aha@gmail.com>"]
 
+[profile.release]
+lto = true
+
 [dependencies]
-unicode-segmentation = "1.1.0"
+unicode-segmentation = "1.2.1"
 lazy_static = "1.1.0"
