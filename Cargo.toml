@@ -4,3 +4,5 @@ version = "0.1.0"
 authors = ["Armin Häberling <armin.aha@gmail.com>"]
 
 [dependencies]
+unicode-segmentation = "1.1.0"
+lazy_static = "1.1.0"
