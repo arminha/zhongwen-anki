@@ -39,7 +39,9 @@ struct Line {
 
 fn main() -> Result<(), Box<Error>> {
     let opt = Opt::from_args();
-    let mut rdr = csv::ReaderBuilder::new().delimiter(b';').from_path(opt.input)?;
+    let mut rdr = csv::ReaderBuilder::new()
+        .delimiter(b';')
+        .from_path(opt.input)?;
     let mut wtr = csv::Writer::from_path(opt.output)?;
     for result in rdr.deserialize() {
         let mut line: Line = result?;
