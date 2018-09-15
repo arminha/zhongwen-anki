@@ -39,10 +39,15 @@ struct Line {
 
 fn main() -> Result<(), Box<Error>> {
     let opt = Opt::from_args();
+
     let mut rdr = csv::ReaderBuilder::new()
         .delimiter(b',')
         .from_path(opt.input)?;
-    let mut wtr = csv::Writer::from_path(opt.output)?;
+
+    let mut wtr = csv::WriterBuilder::new()
+        .has_headers(false)
+        .from_path(opt.output)?;
+
     for result in rdr.deserialize() {
         let mut line: Line = result?;
         let marks = pinyin::numbers_to_marks(&line.pinyin);
