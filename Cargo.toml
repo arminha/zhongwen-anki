@@ -8,8 +8,8 @@ lto = true
 
 [dependencies]
 unicode-segmentation = "1.2.1"
-lazy_static = "1.2.0"
-csv = "1.0.1"
-serde_derive = "1.0.78"
-structopt = "0.2.10"
-serde = "1.0.78"
+lazy_static = "1.3.0"
+csv = "1.0.5"
+serde_derive = "1.0.89"
+structopt = "0.2.15"
+serde = "1.0.89"
