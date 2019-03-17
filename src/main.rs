@@ -13,6 +13,7 @@ mod pinyin;
 
 use std::error::Error;
 use std::path::PathBuf;
+use std::collections::HashSet;
 
 use structopt::StructOpt;
 
@@ -49,10 +50,14 @@ fn main() -> Result<(), Box<Error>> {
         .has_headers(false)
         .from_path(opt.output)?;
 
+    let mut words = HashSet::new();
     for result in rdr.deserialize() {
         let mut line: Line = result?;
         let marks = pinyin::numbers_to_marks(&line.pinyin);
         line.pinyin = marks;
+        if !words.insert(line.mandarin.to_owned()) {
+            eprintln!("Duplicate word: {}", &line.mandarin);
+        }
         wtr.serialize(&line)?;
     }
     wtr.flush()?;
