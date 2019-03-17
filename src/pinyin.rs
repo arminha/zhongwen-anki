@@ -1,3 +1,4 @@
+use lazy_static::lazy_static;
 use unicode_segmentation::UnicodeSegmentation;
 
 use std::collections::HashSet;
@@ -167,7 +168,7 @@ fn add_tone(sillable: &str, tone: u8) -> String {
         return String::from_iter(chars.iter());
     }
     // second vowel
-    'outer: for mut c in chars.iter_mut().rev() {
+    'outer: for c in chars.iter_mut().rev() {
         for (i, vowel) in TONEMARKS_3[0].iter().enumerate() {
             if vowel == c {
                 *c = TONEMARKS_3[tone as usize][i];
@@ -180,7 +181,7 @@ fn add_tone(sillable: &str, tone: u8) -> String {
 
 fn replace_first(chars: &mut Vec<char>, marks: &[&[char]; 5], tone: u8) -> bool {
     for (i, vowel) in marks[0].iter().enumerate() {
-        for mut c in chars.iter_mut() {
+        for c in chars.iter_mut() {
             if vowel == c {
                 *c = marks[tone as usize][i];
                 return true;

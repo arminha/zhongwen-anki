@@ -1,21 +1,14 @@
 #![forbid(unsafe_code)]
 
-#[macro_use]
-extern crate lazy_static;
-extern crate csv;
-extern crate unicode_segmentation;
-#[macro_use]
-extern crate serde_derive;
-extern crate serde;
-extern crate structopt;
+use csv;
+use serde_derive::{Deserialize, Serialize};
+use structopt::{self, StructOpt};
 
 mod pinyin;
 
 use std::collections::HashSet;
 use std::error::Error;
 use std::path::PathBuf;
-
-use structopt::StructOpt;
 
 #[derive(StructOpt, Debug)]
 #[structopt()]
@@ -39,7 +32,7 @@ struct Line {
     german: String,
 }
 
-fn main() -> Result<(), Box<Error>> {
+fn main() -> Result<(), Box<dyn Error>> {
     let opt = Opt::from_args();
 
     let mut rdr = csv::ReaderBuilder::new()
