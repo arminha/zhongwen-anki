@@ -11,9 +11,9 @@ extern crate structopt;
 
 mod pinyin;
 
+use std::collections::HashSet;
 use std::error::Error;
 use std::path::PathBuf;
-use std::collections::HashSet;
 
 use structopt::StructOpt;
 
