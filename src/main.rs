@@ -44,7 +44,9 @@ fn main() -> Result<(), Box<dyn Error>> {
         .from_path(opt.output)?;
 
     let mut words = HashSet::new();
+    let mut count = 0;
     for result in rdr.deserialize() {
+        count += 1;
         let mut line: Line = result?;
         let marks = pinyin::numbers_to_marks(&line.pinyin);
         line.pinyin = marks;
@@ -53,6 +55,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
         wtr.serialize(&line)?;
     }
+    eprintln!("Processed {} words", count);
     wtr.flush()?;
     Ok(())
 }
