@@ -8,18 +8,35 @@ mod pinyin;
 
 use std::collections::HashSet;
 use std::error::Error;
-use std::path::PathBuf;
+use std::fs::{self, File};
+use std::io::Write;
+use std::path::{Path, PathBuf};
 
 #[derive(StructOpt, Debug)]
 #[structopt()]
-struct Opt {
-    /// File to process
-    #[structopt(name = "INPUT", parse(from_os_str))]
-    input: PathBuf,
+enum Opt {
+    /// Reads a word list as CSV and replaces numbers with tone marks for Pinyin text
+    #[structopt(name = "create-word-list")]
+    CreateWordList {
+        /// File to process
+        #[structopt(name = "INPUT", parse(from_os_str))]
+        input: PathBuf,
 
-    /// Output file
-    #[structopt(name = "OUTPUT", parse(from_os_str))]
-    output: PathBuf,
+        /// Output file
+        #[structopt(name = "OUTPUT", parse(from_os_str))]
+        output: PathBuf,
+    },
+    /// Replaces numbered sillables with tone marks
+    #[structopt(name = "numbers-to-tone-marks")]
+    NumbersToToneMarks {
+        /// File to process
+        #[structopt(name = "INPUT", parse(from_os_str))]
+        input: PathBuf,
+
+        /// Output file
+        #[structopt(name = "OUTPUT", parse(from_os_str))]
+        output: PathBuf,
+    },
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -33,15 +50,23 @@ struct Line {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let opt = Opt::from_args();
+    match Opt::from_args() {
+        Opt::CreateWordList { input, output } => {
+            create_word_list(&input, &output)?;
+        }
+        Opt::NumbersToToneMarks { input, output } => {
+            numbers_to_marks(&input, &output)?;
+        }
+    };
+    Ok(())
+}
 
-    let mut rdr = csv::ReaderBuilder::new()
-        .delimiter(b',')
-        .from_path(opt.input)?;
+fn create_word_list(input: &Path, output: &Path) -> Result<(), Box<dyn Error>> {
+    let mut rdr = csv::ReaderBuilder::new().delimiter(b',').from_path(input)?;
 
     let mut wtr = csv::WriterBuilder::new()
         .has_headers(false)
-        .from_path(opt.output)?;
+        .from_path(output)?;
 
     let mut words = HashSet::new();
     let mut count = 0;
@@ -57,5 +82,14 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
     eprintln!("Processed {} words", count);
     wtr.flush()?;
+    Ok(())
+}
+
+fn numbers_to_marks(input: &Path, output: &Path) -> Result<(), Box<dyn Error>> {
+    let contents = fs::read_to_string(input)?;
+    let transformed = pinyin::numbers_to_marks(&contents);
+    print!("{}", &transformed);
+    let mut out = File::create(output)?;
+    write!(out, "{}", transformed)?;
     Ok(())
 }

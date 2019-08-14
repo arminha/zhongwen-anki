@@ -1,3 +1,3 @@
 #!/bin/sh
 
-cargo run data/mandarin.csv data/mandarin.output.csv
+cargo run create-word-list data/mandarin.csv data/mandarin.output.csv
