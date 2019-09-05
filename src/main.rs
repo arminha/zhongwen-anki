@@ -1,7 +1,7 @@
 #![forbid(unsafe_code)]
 
 use csv;
-use serde_derive::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize};
 use structopt::{self, StructOpt};
 
 mod pinyin;

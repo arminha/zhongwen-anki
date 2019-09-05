@@ -18,6 +18,5 @@ lto = true
 unicode-segmentation = "1.3.0"
 lazy_static = "1.3.0"
 csv = "1.0.7"
-serde_derive = "1.0.92"
-serde = "1.0.92"
+serde = { version = "1.0.99", features = ["derive"] }
 structopt = "0.2.16"
