@@ -214,5 +214,4 @@ mod test {
         assert_eq!(numbers_to_marks("Wo3"), "Wǒ");
         assert_eq!(numbers_to_marks("Ni3hao3"), "Nǐhǎo");
     }
-
 }
