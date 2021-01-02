@@ -1,6 +1,5 @@
 #![forbid(unsafe_code)]
 
-use csv;
 use serde::{Deserialize, Serialize};
 use structopt::{self, StructOpt};
 
