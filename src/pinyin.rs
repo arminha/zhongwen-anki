@@ -2,7 +2,6 @@ use lazy_static::lazy_static;
 use unicode_segmentation::UnicodeSegmentation;
 
 use std::collections::HashSet;
-use std::iter::FromIterator;
 
 pub fn split(text: &str) -> Vec<&str> {
     let mut parts: Vec<&str> = Vec::new();
@@ -162,10 +161,10 @@ const TONEMARKS_3: [[char; 6]; 5] = [
 fn add_tone(sillable: &str, tone: u8) -> String {
     let mut chars: Vec<_> = sillable.chars().collect();
     if replace_first(&mut chars, &TONEMARKS_1, tone) {
-        return String::from_iter(chars.iter());
+        return chars.iter().collect();
     }
     if replace_first(&mut chars, &TONEMARKS_2, tone) {
-        return String::from_iter(chars.iter());
+        return chars.iter().collect();
     }
     // second vowel
     'outer: for c in chars.iter_mut().rev() {
@@ -176,7 +175,7 @@ fn add_tone(sillable: &str, tone: u8) -> String {
             }
         }
     }
-    String::from_iter(chars.iter())
+    chars.iter().collect()
 }
 
 fn replace_first(chars: &mut Vec<char>, marks: &[&[char]; 5], tone: u8) -> bool {
