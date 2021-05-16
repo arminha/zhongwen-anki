@@ -1,25 +1,21 @@
 use lazy_static::lazy_static;
 use unicode_segmentation::UnicodeSegmentation;
 
+use std::borrow::Cow;
 use std::collections::HashSet;
 
-pub fn split(text: &str) -> Vec<&str> {
-    let mut parts: Vec<&str> = Vec::new();
-    let w = text.split_word_bounds().collect::<Vec<&str>>();
-    for word in w {
-        for sillable in split_word(word) {
-            parts.push(sillable);
-        }
-    }
-    parts
+fn split(text: &str) -> Vec<&str> {
+    text.split_word_bounds()
+        .flat_map(|word| split_word(word))
+        .collect()
 }
 
 fn split_word(word: &str) -> Vec<&str> {
     // TODO: there are some edge cases not handled by this but it should be safe for our use
     let mut result = Vec::with_capacity(2);
-    let mut next = add_word(word, &mut result);
-    while next.is_some() {
-        next = add_word(next.unwrap(), &mut result);
+    let mut remaining = add_word(word, &mut result);
+    while let Some(r) = remaining {
+        remaining = add_word(r, &mut result);
     }
     result
 }
@@ -107,12 +103,8 @@ pub fn numbers_to_marks(text: &str) -> String {
         if SILLABLE_SET.contains(&sillable.to_lowercase()) {
             if let Some(tone) = tone_number(sillable) {
                 let sillable = &sillable[0..sillable.len() - 1];
-                if tone == 5 {
-                    result.push_str(sillable);
-                } else {
-                    let with_tone = add_tone(sillable, tone);
-                    result.push_str(&with_tone);
-                }
+                let with_tone = add_tone(sillable, tone);
+                result.push_str(&with_tone);
             } else {
                 result.push_str(sillable);
             }
@@ -158,13 +150,17 @@ const TONEMARKS_3: [[char; 6]; 5] = [
     ['ì', 'ù', 'ǜ', 'Ì', 'Ù', 'Ǜ'],
 ];
 
-fn add_tone(sillable: &str, tone: u8) -> String {
+fn add_tone(sillable: &str, tone: u8) -> Cow<str> {
+    if tone == 5 {
+        return sillable.into();
+    }
+
     let mut chars: Vec<_> = sillable.chars().collect();
     if replace_first(&mut chars, &TONEMARKS_1, tone) {
-        return chars.iter().collect();
+        return chars.into_iter().collect();
     }
     if replace_first(&mut chars, &TONEMARKS_2, tone) {
-        return chars.iter().collect();
+        return chars.into_iter().collect();
     }
     // second vowel
     'outer: for c in chars.iter_mut().rev() {
@@ -175,7 +171,7 @@ fn add_tone(sillable: &str, tone: u8) -> String {
             }
         }
     }
-    chars.iter().collect()
+    chars.into_iter().collect()
 }
 
 fn replace_first(chars: &mut Vec<char>, marks: &[&[char]; 5], tone: u8) -> bool {
