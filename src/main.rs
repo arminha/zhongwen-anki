@@ -1,7 +1,7 @@
 #![forbid(unsafe_code)]
 
+use clap::Parser;
 use serde::{Deserialize, Serialize};
-use structopt::{self, StructOpt};
 
 mod pinyin;
 
@@ -11,29 +11,29 @@ use std::fs::{self, File};
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
-#[derive(StructOpt, Debug)]
-#[structopt()]
+#[derive(Parser, Debug)]
+#[clap(version)]
 enum Opt {
     /// Reads a word list as CSV and replaces numbers with tone marks for Pinyin text
-    #[structopt(name = "create-word-list")]
+    #[clap(name = "create-word-list")]
     CreateWordList {
         /// File to process
-        #[structopt(name = "INPUT", parse(from_os_str))]
+        #[clap(name = "INPUT", parse(from_os_str))]
         input: PathBuf,
 
         /// Output file
-        #[structopt(name = "OUTPUT", parse(from_os_str))]
+        #[clap(name = "OUTPUT", parse(from_os_str))]
         output: PathBuf,
     },
     /// Replaces numbered sillables with tone marks
-    #[structopt(name = "numbers-to-tone-marks")]
+    #[clap(name = "numbers-to-tone-marks")]
     NumbersToToneMarks {
         /// File to process
-        #[structopt(name = "INPUT", parse(from_os_str))]
+        #[clap(name = "INPUT", parse(from_os_str))]
         input: PathBuf,
 
         /// Output file
-        #[structopt(name = "OUTPUT", parse(from_os_str))]
+        #[clap(name = "OUTPUT", parse(from_os_str))]
         output: PathBuf,
     },
 }
@@ -49,7 +49,7 @@ struct Line {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-    match Opt::from_args() {
+    match Opt::parse() {
         Opt::CreateWordList { input, output } => {
             create_word_list(&input, &output)?;
         }

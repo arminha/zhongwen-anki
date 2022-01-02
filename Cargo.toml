@@ -15,8 +15,8 @@ license = "GPL-3.0"
 lto = true
 
 [dependencies]
-unicode-segmentation = "1.8.0"
-lazy_static = "1.4.0"
+clap = { version = "3.0.0", features = ["derive"] }
 csv = "1.1.6"
+lazy_static = "1.4.0"
 serde = { version = "1.0.133", features = ["derive"] }
-structopt = "0.3.25"
+unicode-segmentation = "1.8.0"
