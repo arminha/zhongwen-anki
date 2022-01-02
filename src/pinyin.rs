@@ -5,9 +5,7 @@ use std::borrow::Cow;
 use std::collections::HashSet;
 
 fn split(text: &str) -> Vec<&str> {
-    text.split_word_bounds()
-        .flat_map(|word| split_word(word))
-        .collect()
+    text.split_word_bounds().flat_map(split_word).collect()
 }
 
 fn split_word(word: &str) -> Vec<&str> {
