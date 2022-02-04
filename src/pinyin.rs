@@ -172,7 +172,7 @@ fn add_tone(sillable: &str, tone: u8) -> Cow<str> {
     chars.into_iter().collect()
 }
 
-fn replace_first(chars: &mut Vec<char>, marks: &[&[char]; 5], tone: u8) -> bool {
+fn replace_first(chars: &mut [char], marks: &[&[char]; 5], tone: u8) -> bool {
     for (i, vowel) in marks[0].iter().enumerate() {
         for c in chars.iter_mut() {
             if vowel == c {
