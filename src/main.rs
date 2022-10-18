@@ -18,22 +18,22 @@ enum Opt {
     #[clap(name = "create-word-list")]
     CreateWordList {
         /// File to process
-        #[clap(name = "INPUT", parse(from_os_str))]
+        #[clap(name = "INPUT", value_parser)]
         input: PathBuf,
 
         /// Output file
-        #[clap(name = "OUTPUT", parse(from_os_str))]
+        #[clap(name = "OUTPUT", value_parser)]
         output: PathBuf,
     },
     /// Replaces numbered sillables with tone marks
     #[clap(name = "numbers-to-tone-marks")]
     NumbersToToneMarks {
         /// File to process
-        #[clap(name = "INPUT", parse(from_os_str))]
+        #[clap(name = "INPUT", value_parser)]
         input: PathBuf,
 
         /// Output file
-        #[clap(name = "OUTPUT", parse(from_os_str))]
+        #[clap(name = "OUTPUT", value_parser)]
         output: PathBuf,
     },
 }
