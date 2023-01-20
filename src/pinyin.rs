@@ -88,7 +88,7 @@ fn generate_sillable_set() -> HashSet<String> {
         for sillable in line.split_whitespace() {
             sillables.insert(sillable.to_owned());
             for i in 0..6 {
-                sillables.insert(format!("{}{}", sillable, i));
+                sillables.insert(format!("{sillable}{i}"));
             }
         }
     }

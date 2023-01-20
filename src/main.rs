@@ -79,7 +79,7 @@ fn create_word_list(input: &Path, output: &Path) -> Result<(), Box<dyn Error>> {
         }
         wtr.serialize(&line)?;
     }
-    eprintln!("Processed {} words", count);
+    eprintln!("Processed {count} words");
     wtr.flush()?;
     Ok(())
 }
@@ -87,8 +87,8 @@ fn create_word_list(input: &Path, output: &Path) -> Result<(), Box<dyn Error>> {
 fn numbers_to_marks(input: &Path, output: &Path) -> Result<(), Box<dyn Error>> {
     let contents = fs::read_to_string(input)?;
     let transformed = pinyin::numbers_to_marks(&contents);
-    print!("{}", &transformed);
+    print!("{transformed}");
     let mut out = File::create(output)?;
-    write!(out, "{}", transformed)?;
+    write!(out, "{transformed}")?;
     Ok(())
 }
