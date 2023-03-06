@@ -15,7 +15,7 @@ license = "GPL-3.0"
 lto = true
 
 [dependencies]
-clap = { version = "4.1.6", features = ["derive", "wrap_help"] }
+clap = { version = "4.1.8", features = ["derive", "wrap_help"] }
 csv = "1.2.0"
 lazy_static = "1.4.0"
 serde = { version = "1.0.152", features = ["derive"] }
