@@ -1,4 +1,4 @@
-use lazy_static::lazy_static;
+use once_cell::sync::Lazy;
 use unicode_segmentation::UnicodeSegmentation;
 
 use std::borrow::Cow;
@@ -37,9 +37,7 @@ fn add_word<'a>(word: &'a str, result: &mut Vec<&'a str>) -> Option<&'a str> {
     None
 }
 
-lazy_static! {
-    static ref SILLABLE_SET: HashSet<String> = generate_sillable_set();
-}
+static SILLABLE_SET: Lazy<HashSet<String>> = Lazy::new(generate_sillable_set);
 
 // see https://en.wikipedia.org/wiki/Pinyin_table
 const SILLABLE_TABLE: &[&str] = &[
