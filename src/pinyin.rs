@@ -1,8 +1,8 @@
-use once_cell::sync::Lazy;
 use unicode_segmentation::UnicodeSegmentation;
 
 use std::borrow::Cow;
 use std::collections::HashSet;
+use std::sync::LazyLock;
 
 fn split(text: &str) -> Vec<&str> {
     text.split_word_bounds().flat_map(split_word).collect()
@@ -37,7 +37,7 @@ fn add_word<'a>(word: &'a str, result: &mut Vec<&'a str>) -> Option<&'a str> {
     None
 }
 
-static SILLABLE_SET: Lazy<HashSet<String>> = Lazy::new(generate_sillable_set);
+static SILLABLE_SET: LazyLock<HashSet<String>> = LazyLock::new(generate_sillable_set);
 
 // see https://en.wikipedia.org/wiki/Pinyin_table
 const SILLABLE_TABLE: &[&str] = &[
