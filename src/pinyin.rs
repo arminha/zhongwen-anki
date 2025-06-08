@@ -146,7 +146,7 @@ const TONEMARKS_3: [[char; 6]; 5] = [
     ['ì', 'ù', 'ǜ', 'Ì', 'Ù', 'Ǜ'],
 ];
 
-fn add_tone(sillable: &str, tone: u8) -> Cow<str> {
+fn add_tone(sillable: &str, tone: u8) -> Cow<'_, str> {
     if tone == 5 {
         return sillable.into();
     }
